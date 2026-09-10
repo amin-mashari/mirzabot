@@ -44,6 +44,7 @@
   - [Install](#install)
   - [Update](#update)
   - [Remove](#remove)
+  - [Install / Update from a Private Fork](#install--update-from-a-private-fork)
   - [Non-Interactive (CLI) Usage](#non-interactive-cli-usage)
 - [💎 Free vs. Pro](#-free-vs-pro)
 - [🌍 Languages](#-languages)
@@ -89,6 +90,7 @@ Mirza Bot integrates with the most popular VPN and network management panels:
 | 🇮🇷 **Zarinpal** | Online gateway |
 | 🇮🇷 **Aqayepardakht** | Online gateway |
 | 🇮🇷 **IranPay** | Online gateway |
+| 🇮🇷 **TonPays** | Online gateway |
 
 ---
 
@@ -180,6 +182,42 @@ curl -o install.sh -L https://raw.githubusercontent.com/mahdiMGF2/mirzabot/main/
 
 Run the same command and select **`3`** to completely remove the bot and its services.
 
+### Install / Update from a Private Fork
+
+This deployment tracks a **private fork** (`amin-mashari/mirza`) instead of the public upstream repo, so it can carry custom changes (e.g. the TonPays payment gateway) while still picking up official updates — a scheduled [GitHub Action](.github/workflows/sync-upstream.yml) in the fork merges upstream's `main` into it automatically, opening a PR instead of the fork's `main` if a merge ever conflicts.
+
+Because the fork is **private**, GitHub won't serve it over the plain `curl`/zip download the public install steps above use — the server needs an **SSH deploy key** instead.
+
+**One-time server setup:**
+
+```bash
+# On the server, as root:
+ssh-keygen -t ed25519 -f ~/.ssh/mirza_deploy -N ""
+cat ~/.ssh/mirza_deploy.pub
+```
+
+Add the printed public key to the `mirza` repo on GitHub as a **read-only Deploy Key**: *Settings → Deploy keys → Add deploy key* (leave "Allow write access" unchecked). Then point SSH at it:
+
+```bash
+cat >> ~/.ssh/config <<'EOF'
+Host github.com
+  IdentityFile ~/.ssh/mirza_deploy
+  IdentitiesOnly yes
+EOF
+ssh -T git@github.com   # should greet you by the deploy key's repo, not a username
+```
+
+**Bootstrap the installer** (the custom `install.sh` — with the private-fork option — lives in the private repo itself, so it has to be cloned rather than curl'd):
+
+```bash
+git clone --depth 1 git@github.com:amin-mashari/mirza.git /root/mirza-src
+bash /root/mirza-src/install.sh
+```
+
+From the interactive menu, choose **`1`** (install) or **`2`** (update) as usual, then at the version-source prompt pick **`4) Private fork (your own repo, via SSH deploy key)`**. Non-interactively, pass `--channel private` (see below).
+
+To pull in the latest sync from upstream, just re-run the update flow with the private-fork source again — the fork's `main` is what's already been merged with upstream by the GitHub Action, so no extra step is needed on the server side.
+
 ### Non-Interactive (CLI) Usage
 
 You can also drive the installer entirely from the command line — handy for automation and scripted deployments.
@@ -206,7 +244,7 @@ You can also drive the installer entirely from the command line — handy for au
 | `--db-user` | Database username |
 | `--db-pass` | Database password |
 | `--version` | Specific release tag (e.g. `0.1.7`) |
-| `--channel` | `beta` · `release` · `auto` |
+| `--channel` | `beta` · `release` · `auto` · `private` (this deployment's fork, via SSH deploy key) |
 | `-h`, `--help` | Show CLI help and exit |
 
 **Examples**
@@ -222,6 +260,9 @@ mirza install --name myvpnbot --token 123:ABC \
 # Update to a specific version or channel
 mirza update --version 0.1.6
 mirza update --channel release
+
+# Install/update from this deployment's private fork
+mirza update --channel private
 
 # Remove
 mirza remove
