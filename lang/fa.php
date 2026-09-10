@@ -1812,8 +1812,11 @@ nowpayments.io
 📌 کلید فعلی شما:
 <code>%s</code>',
                         'askAqayePardakhtMerchant' => '💳 مرچنت کد خود را ازآقای پرداخت دریافت و در این قسمت وارد کنید
-        
+
 مرچنت کد فعلی شما : %s',
+                        'askTonPaysApiKey' => '💳 کلید API خود را از ربات تون‌پیز دریافت و در این قسمت وارد کنید
+
+کلید API فعلی شما : %s',
                         'askZarinpalMerchant' => '💳 مرچنت کد خود را از زرین پال دریافت و در این قسمت وارد کنید
         
 مرچنت کد فعلی شما : %s',
@@ -2658,7 +2661,12 @@ f,n.n2',
 نام کاربری کاربر :‌ %s',
                         'errorAqayePardakhtLink' => '⭕️ خطا در ساخت لینک اقای پردات
 ✍️ دلیل خطا : %s
-            
+
+آیدی کابر : %s
+نام کاربری کاربر : @%s',
+                        'errorTonPaysLink' => '⭕️ خطا در ساخت لینک تون‌پیز
+✍️ دلیل خطا : %s
+
 آیدی کابر : %s
 نام کاربری کاربر : @%s',
                         'errorBulkAccountCreate' => '
@@ -3555,6 +3563,7 @@ f,n.n2',
                 'agentPanel' => '👨‍💻 پنل نمایندگی',
                 'agentRequestDesc' => '📌 توضیحات خود را برای ثبت درخواست نمایندگی ارسال نمایید.',
                 'aqayePardakht' => '🔵 درگاه آقای پرداخت',
+                'tonPays' => '🔵 درگاه تون‌پیز',
                 'botOff' => '❌ ربات خاموش است، لطفا دقایقی دیگر مراجعه کنید',
                 'cart' => 'برای افزایش موجودی، مبلغ <code>{price}</code>  تومان  را به شماره‌ی حساب زیر واریز کنید 👇🏻
         
@@ -3727,6 +3736,7 @@ f,n.n2',
                 'appDownloadLink' => '🔗 لینک دانلود برنامه',
                 'appDownloadLinkAlt' => '🔗لینک دانلود برنامه',
                 'aqayePardakhtGateway' => '🔵 آقای پرداخت',
+                'tonPaysGateway' => '🔵 تون‌پیز',
                 'authWithLink' => '🔑 احراز هویت با لینک',
                 'authenticate' => '🔒 احراز هویت',
                 'authenticateUser' => 'احراز هویت کاربر',
@@ -3762,6 +3772,7 @@ f,n.n2',
                 'cancelPinnedMessages' => 'لغو پیام های پین شده',
                 'cartToCartGateway' => '🔌 کارت به کارت',
                 'cashbackAqayePardakht' => '💰 کش بک آقای پرداخت',
+                'cashbackTonPays' => '💰 کش بک تون‌پیز',
                 'cashbackCartToCart' => '💰 کش بک کارت به کارت',
                 'cashbackIranPay1' => '💰 کش بک ارزی ریالی',
                 'cashbackIranPay2' => '💰 کش بک cubpay',
@@ -3928,6 +3939,7 @@ f,n.n2',
                 'marzban' => 'مرزبان',
                 'marzneshin' => 'مرزنشین',
                 'maxAmountAqayePardakht' => '⬆️ حداکثر مبلغ آقای پرداخت',
+                'maxAmountTonPays' => '⬆️ حداکثر مبلغ تون‌پیز',
                 'maxAmountCartToCart' => '⬆️ حداکثر مبلغ کارت به کارت',
                 'maxAmountCryptoOffline' => '⬆️ حداکثر مبلغ رمزارز آفلاین',
                 'maxAmountIranPay1' => '⬆️ حداکثر مبلغ ارزی ریالی',
@@ -3943,6 +3955,7 @@ f,n.n2',
                 'messagingSection' => '📨 بخش ارسال پیام',
                 'mikrotik' => 'میکروتیک',
                 'minAmountAqayePardakht' => '⬇️ حداقل مبلغ آقای پرداخت',
+                'minAmountTonPays' => '⬇️ حداقل مبلغ تون‌پیز',
                 'minAmountCartToCart' => '⬇️ حداقل مبلغ کارت به کارت',
                 'minAmountCryptoOffline' => '⬇️ حداقل مبلغ رمزارز آفلاین',
                 'minAmountIranPay1' => '⬇️ حداقل مبلغ ارزی ریالی',
@@ -4033,8 +4046,10 @@ f,n.n2',
                 'setAffiliatePercent' => '🧮 تنظیم درصد زیرمجموعه',
                 'setApi' => 'تنظیم api',
                 'setAqayePardakhtMerchant' => 'تنظیم مرچنت آقای پرداخت',
+                'setTonPaysApiKey' => 'تنظیم کلید API تون‌پیز',
                 'setCardNumber' => '💳 تنظیم شماره کارت',
                 'setEducationAqayePardakht' => '📚 تنظیم آموزش درگاه اقای پرداخت',
+                'setEducationTonPays' => '📚 تنظیم آموزش درگاه تون‌پیز',
                 'setEducationCartToCart' => '📚 تنظیم آموزش کارت به کارت',
                 'setEducationCryptoOffline' => '📚 تنظیم آموزش  ارزی افلاین',
                 'setEducationIranPay1' => '📚 تنظیم آموزش ارزی ریالی اول',
@@ -4306,6 +4321,7 @@ f,n.n2',
                 'paymentMethodAdminAdd' => 'افزایش توسط ادمین',
                 'paymentMethodAdminDeduct' => 'کسر موجودی ادمین',
                 'paymentMethodAqayePardakht' => 'آقای پرداخت',
+                'paymentMethodTonPays' => 'تون‌پیز',
                 'paymentMethodCardToCard' => 'کارت به کارت',
                 'paymentMethodCryptoOffline' => 'ارز دیجیتال آفلاین',
                 'paymentMethodRialGateway1' => 'درگاه ریالی ۱',
@@ -4529,6 +4545,7 @@ f,n.n2',
                 'userMethodAdminAdd' => 'افزایش ادمین',
                 'userMethodAdminDeduct' => 'کسر ادمین',
                 'userMethodAqayePardakht' => 'آقای پرداخت',
+                'userMethodTonPays' => 'تون‌پیز',
                 'userMethodCardToCard' => 'کارت→کارت',
                 'userMethodCrypto' => 'ارز دیجیتال',
                 'userMethodRial1' => 'ریالی ۱',
@@ -4673,11 +4690,17 @@ f,n.n2',
 شماره کارت کاربر : %s
 روش پرداخت :  درگاه زرین پال',
                 'reportAqayepardakht' => '💵 پرداخت جدید
-        
+
 آیدی عددی کاربر : %s
 نام کاربری کاربر : %s
 مبلغ تراکنش %s
 روش پرداخت :  درگاه آقای پرداخت',
+                'reportTonpays' => '💵 پرداخت جدید
+
+آیدی عددی کاربر : %s
+نام کاربری کاربر : %s
+مبلغ تراکنش %s
+روش پرداخت :  درگاه تون‌پیز',
                 'reportIranpay' => '💵 پرداخت جدید
         
 آیدی عددی کاربر : %s

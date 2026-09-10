@@ -89,6 +89,12 @@ $values = [
     'helpzarinpal' => '2',
     'helpnowpayment' => '2',
     'helpofflinearze' => '2',
+    'statustonpays' => 'offtonpays',
+    'apikey_tonpays' => '0',
+    'chashbacktonpays' => '0',
+    'minbalancetonpays' => $min,
+    'maxbalancetonpays' => $max,
+    'helptonpays' => '2',
 ];
 
 $seed = [];

@@ -1815,8 +1815,11 @@ nowpayments.io
 📌 Your current key:
 <code>%s</code>',
                         'askAqayePardakhtMerchant' => '💳 Obtain your merchant code from Aghaye Pardakht and enter it in this section
-        
+
 Your current merchant code: %s',
+                        'askTonPaysApiKey' => '💳 Obtain your API key from the TonPays bot and enter it in this section
+
+Your current API key: %s',
                         'askZarinpalMerchant' => '💳 Obtain your merchant code from ZarinPal and enter it in this section
         
 Your current merchant code: %s',
@@ -2667,7 +2670,12 @@ User numeric ID :  %s
 User username :‌ %s',
                         'errorAqayePardakhtLink' => '⭕️ Error creating Aghaye Pardakht link
 ✍️ Error reason : %s
-            
+
+User ID : %s
+User username : @%s',
+                        'errorTonPaysLink' => '⭕️ Error creating TonPays link
+✍️ Error reason : %s
+
 User ID : %s
 User username : @%s',
                         'errorBulkAccountCreate' => '
@@ -3570,6 +3578,7 @@ Connection link:
                 'agentPanel' => '👨‍💻 Agency panel',
                 'agentRequestDesc' => '📌 Send your description to submit an agency request.',
                 'aqayePardakht' => '🔵 Aghaye Pardakht gateway',
+                'tonPays' => '🔵 TonPays gateway',
                 'botOff' => '❌ The bot is off, please check back in a few minutes',
                 'cart' => 'To increase your balance, deposit the amount of <code>{price}</code>  Toman  to the account number below 👇🏻
         
@@ -3743,6 +3752,7 @@ We hope you had a good experience with the ease and speed of your service. If yo
                 'appDownloadLink' => '🔗 App download link',
                 'appDownloadLinkAlt' => '🔗App download link',
                 'aqayePardakhtGateway' => '🔵 Aghaye Pardakht',
+                'tonPaysGateway' => '🔵 TonPays',
                 'authWithLink' => '🔑 Identity verification with link',
                 'authenticate' => '🔒 Identity verification',
                 'authenticateUser' => 'User identity verification',
@@ -3778,6 +3788,7 @@ We hope you had a good experience with the ease and speed of your service. If yo
                 'cancelPinnedMessages' => 'Cancel pinned messages',
                 'cartToCartGateway' => '🔌 Card to card',
                 'cashbackAqayePardakht' => '💰 Aghaye Pardakht cashback',
+                'cashbackTonPays' => '💰 TonPays cashback',
                 'cashbackCartToCart' => '💰 Card-to-card cashback',
                 'cashbackIranPay1' => '💰 Rial currency cashback',
                 'cashbackIranPay2' => '💰 cubpay cashback',
@@ -3944,6 +3955,7 @@ We hope you had a good experience with the ease and speed of your service. If yo
                 'marzban' => 'Marzban',
                 'marzneshin' => 'Marzneshin',
                 'maxAmountAqayePardakht' => '⬆️ Maximum Aghaye Pardakht amount',
+                'maxAmountTonPays' => '⬆️ Maximum TonPays amount',
                 'maxAmountCartToCart' => '⬆️ Maximum card-to-card amount',
                 'maxAmountCryptoOffline' => '⬆️ Maximum offline crypto amount',
                 'maxAmountIranPay1' => '⬆️ Maximum Rial currency amount',
@@ -3959,6 +3971,7 @@ We hope you had a good experience with the ease and speed of your service. If yo
                 'messagingSection' => '📨 Message sending section',
                 'mikrotik' => 'MikroTik',
                 'minAmountAqayePardakht' => '⬇️ Minimum Aghaye Pardakht amount',
+                'minAmountTonPays' => '⬇️ Minimum TonPays amount',
                 'minAmountCartToCart' => '⬇️ Minimum card-to-card amount',
                 'minAmountCryptoOffline' => '⬇️ Minimum offline crypto amount',
                 'minAmountIranPay1' => '⬇️ Minimum Rial currency amount',
@@ -4049,8 +4062,10 @@ We hope you had a good experience with the ease and speed of your service. If yo
                 'setAffiliatePercent' => '🧮 Set referral percentage',
                 'setApi' => 'Set api',
                 'setAqayePardakhtMerchant' => 'Set Aghaye Pardakht merchant',
+                'setTonPaysApiKey' => 'Set TonPays API key',
                 'setCardNumber' => '💳 Set card number',
                 'setEducationAqayePardakht' => '📚 Set Aghaye Pardakht gateway tutorial',
+                'setEducationTonPays' => '📚 Set TonPays gateway tutorial',
                 'setEducationCartToCart' => '📚 Set card-to-card tutorial',
                 'setEducationCryptoOffline' => '📚 Set offline currency tutorial ',
                 'setEducationIranPay1' => '📚 Set first Rial currency tutorial',
@@ -4322,6 +4337,7 @@ We hope you had a good experience with the ease and speed of your service. If yo
                 'paymentMethodAdminAdd' => 'Increase by admin',
                 'paymentMethodAdminDeduct' => 'Admin balance deduction',
                 'paymentMethodAqayePardakht' => 'Aghaye Pardakht',
+                'paymentMethodTonPays' => 'TonPays',
                 'paymentMethodCardToCard' => 'Card to card',
                 'paymentMethodCryptoOffline' => 'Offline cryptocurrency',
                 'paymentMethodRialGateway1' => 'Rial gateway 1',
@@ -4545,6 +4561,7 @@ We hope you had a good experience with the ease and speed of your service. If yo
                 'userMethodAdminAdd' => 'Admin increase',
                 'userMethodAdminDeduct' => 'Admin deduction',
                 'userMethodAqayePardakht' => 'Aghaye Pardakht',
+                'userMethodTonPays' => 'TonPays',
                 'userMethodCardToCard' => 'Card→card',
                 'userMethodCrypto' => 'Cryptocurrency',
                 'userMethodRial1' => 'Rial 1',
@@ -4689,11 +4706,17 @@ Payment transaction number : %s
 User card number : %s
 Payment method :  ZarinPal gateway',
                 'reportAqayepardakht' => '💵 New payment
-        
+
 User numeric ID : %s
 User username : %s
 Transaction amount %s
 Payment method :  Aghaye Pardakht gateway',
+                'reportTonpays' => '💵 New payment
+
+User numeric ID : %s
+User username : %s
+Transaction amount %s
+Payment method :  TonPays gateway',
                 'reportIranpay' => '💵 New payment
         
 User numeric ID : %s

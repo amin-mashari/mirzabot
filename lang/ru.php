@@ -1815,8 +1815,11 @@ nowpayments.io
 📌 Ваш текущий ключ:
 <code>%s</code>',
                         'askAqayePardakhtMerchant' => '💳 Получите ваш код продавца от Aghaye Pardakht и введите его в этом разделе
-        
+
 Ваш текущий код продавца: %s',
+                        'askTonPaysApiKey' => '💳 Получите ваш API-ключ от бота TonPays и введите его в этом разделе
+
+Ваш текущий API-ключ: %s',
                         'askZarinpalMerchant' => '💳 Получите ваш код продавца от ZarinPal и введите его в этом разделе
         
 Ваш текущий код продавца: %s',
@@ -2667,7 +2670,12 @@ ID пользователя: %s
 Имя пользователя :‌ %s',
                         'errorAqayePardakhtLink' => '⭕️ Ошибка создания ссылки Aghaye Pardakht
 ✍️ Причина ошибки : %s
-            
+
+ID пользователя : %s
+Имя пользователя : @%s',
+                        'errorTonPaysLink' => '⭕️ Ошибка создания ссылки TonPays
+✍️ Причина ошибки : %s
+
 ID пользователя : %s
 Имя пользователя : @%s',
                         'errorBulkAccountCreate' => '
@@ -3570,6 +3578,7 @@ ID пользователя : %s
                 'agentPanel' => '👨‍💻 Панель агентства',
                 'agentRequestDesc' => '📌 Отправьте ваше описание для подачи запроса на агентство.',
                 'aqayePardakht' => '🔵 Шлюз Aghaye Pardakht',
+                'tonPays' => '🔵 Шлюз TonPays',
                 'botOff' => '❌ Бот выключен, пожалуйста, зайдите через несколько минут',
                 'cart' => 'Чтобы пополнить баланс, внесите сумму <code>{price}</code>  туманов  на номер счёта ниже 👇🏻
         
@@ -3743,6 +3752,7 @@ ID пользователя : %s
                 'appDownloadLink' => '🔗 Ссылка для скачивания приложения',
                 'appDownloadLinkAlt' => '🔗Ссылка для скачивания приложения',
                 'aqayePardakhtGateway' => '🔵 Aghaye Pardakht',
+                'tonPaysGateway' => '🔵 TonPays',
                 'authWithLink' => '🔑 Проверка личности по ссылке',
                 'authenticate' => '🔒 Проверка личности',
                 'authenticateUser' => 'Проверка личности пользователя',
@@ -3778,6 +3788,7 @@ ID пользователя : %s
                 'cancelPinnedMessages' => 'Отменить закреплённые сообщения',
                 'cartToCartGateway' => '🔌 Карта на карту',
                 'cashbackAqayePardakht' => '💰 Кэшбэк Aghaye Pardakht',
+                'cashbackTonPays' => '💰 Кэшбэк TonPays',
                 'cashbackCartToCart' => '💰 Кэшбэк карта на карту',
                 'cashbackIranPay1' => '💰 Кэшбэк риаловой валюты',
                 'cashbackIranPay2' => '💰 Кэшбэк cubpay',
@@ -3944,6 +3955,7 @@ ID пользователя : %s
                 'marzban' => 'Marzban',
                 'marzneshin' => 'Marzneshin',
                 'maxAmountAqayePardakht' => '⬆️ Максимальная сумма Aghaye Pardakht',
+                'maxAmountTonPays' => '⬆️ Максимальная сумма TonPays',
                 'maxAmountCartToCart' => '⬆️ Максимальная сумма карта на карту',
                 'maxAmountCryptoOffline' => '⬆️ Максимальная сумма офлайн-крипто',
                 'maxAmountIranPay1' => '⬆️ Максимальная сумма риаловой валюты',
@@ -3959,6 +3971,7 @@ ID пользователя : %s
                 'messagingSection' => '📨 Раздел отправки сообщений',
                 'mikrotik' => 'MikroTik',
                 'minAmountAqayePardakht' => '⬇️ Минимальная сумма Aghaye Pardakht',
+                'minAmountTonPays' => '⬇️ Минимальная сумма TonPays',
                 'minAmountCartToCart' => '⬇️ Минимальная сумма карта на карту',
                 'minAmountCryptoOffline' => '⬇️ Минимальная сумма офлайн-крипто',
                 'minAmountIranPay1' => '⬇️ Минимальная сумма риаловой валюты',
@@ -4049,8 +4062,10 @@ ID пользователя : %s
                 'setAffiliatePercent' => '🧮 Установить процент реферала',
                 'setApi' => 'Установить api',
                 'setAqayePardakhtMerchant' => 'Установить продавца Aghaye Pardakht',
+                'setTonPaysApiKey' => 'Установить API-ключ TonPays',
                 'setCardNumber' => '💳 Установить номер карты',
                 'setEducationAqayePardakht' => '📚 Установить инструкцию шлюза Aghaye Pardakht',
+                'setEducationTonPays' => '📚 Установить инструкцию шлюза TonPays',
                 'setEducationCartToCart' => '📚 Установить инструкцию карта на карту',
                 'setEducationCryptoOffline' => '📚 Установить инструкцию офлайн-валюты ',
                 'setEducationIranPay1' => '📚 Установить инструкцию первой риаловой валюты',
@@ -4322,6 +4337,7 @@ ID пользователя : %s
                 'paymentMethodAdminAdd' => 'Увеличение администратором',
                 'paymentMethodAdminDeduct' => 'Списание баланса администратором',
                 'paymentMethodAqayePardakht' => 'Aghaye Pardakht',
+                'paymentMethodTonPays' => 'TonPays',
                 'paymentMethodCardToCard' => 'Карта на карту',
                 'paymentMethodCryptoOffline' => 'Офлайн-криптовалюта',
                 'paymentMethodRialGateway1' => 'Риаловый шлюз 1',
@@ -4545,6 +4561,7 @@ ID пользователя : %s
                 'userMethodAdminAdd' => 'Увеличение администратором',
                 'userMethodAdminDeduct' => 'Списание администратором',
                 'userMethodAqayePardakht' => 'Aghaye Pardakht',
+                'userMethodTonPays' => 'TonPays',
                 'userMethodCardToCard' => 'Карта→карта',
                 'userMethodCrypto' => 'Криптовалюта',
                 'userMethodRial1' => 'Риаловый 1',
@@ -4689,11 +4706,17 @@ ID пользователя : %s
 Номер карты пользователя : %s
 Способ оплаты :  Шлюз ZarinPal',
                 'reportAqayepardakht' => '💵 Новый платёж
-        
+
 Числовой ID пользователя : %s
 Имя пользователя : %s
 Сумма транзакции %s
 Способ оплаты :  Шлюз Aghaye Pardakht',
+                'reportTonpays' => '💵 Новый платёж
+
+Числовой ID пользователя : %s
+Имя пользователя : %s
+Сумма транзакции %s
+Способ оплаты :  Шлюз TonPays',
                 'reportIranpay' => '💵 Новый платёж
         
 Числовой ID пользователя : %s

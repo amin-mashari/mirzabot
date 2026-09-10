@@ -2398,6 +2398,57 @@ function createPayaqayepardakht($price, $order_id)
     curl_close($curl);
     return json_decode($response, true);
 }
+function createPayTonPays($price, $order_id)
+{
+    global $domainhosts;
+    $apikey_tonpays = select("PaySetting", "ValuePay", "NamePay", "apikey_tonpays", "select")['ValuePay'];
+    $curl = curl_init();
+    curl_setopt_array($curl, array(
+        CURLOPT_URL => 'https://tonpays.online/api/v1/invoices/create',
+        CURLOPT_RETURNTRANSFER => true,
+        CURLOPT_ENCODING => '',
+        CURLOPT_MAXREDIRS => 10,
+        CURLOPT_TIMEOUT => 0,
+        CURLOPT_FOLLOWLOCATION => true,
+        CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+        CURLOPT_CUSTOMREQUEST => 'POST',
+        CURLOPT_HTTPHEADER => array(
+            'Content-Type: application/json',
+            'Accept: application/json',
+            'X-API-Key: ' . $apikey_tonpays
+        ),
+    ));
+    curl_setopt($curl, CURLOPT_POSTFIELDS, json_encode([
+        'amount' => $price,
+        'order_id' => $order_id,
+        'callback_url' => "https://$domainhosts/payment/tonpays.php",
+    ]));
+    $response = curl_exec($curl);
+    curl_close($curl);
+    return json_decode($response, true);
+}
+function checkTonPaysInvoice($invoice_id)
+{
+    $apikey_tonpays = select("PaySetting", "ValuePay", "NamePay", "apikey_tonpays", "select")['ValuePay'];
+    $curl = curl_init();
+    curl_setopt_array($curl, array(
+        CURLOPT_URL => 'https://tonpays.online/api/v1/invoices/check/' . rawurlencode($invoice_id),
+        CURLOPT_RETURNTRANSFER => true,
+        CURLOPT_ENCODING => '',
+        CURLOPT_MAXREDIRS => 10,
+        CURLOPT_TIMEOUT => 0,
+        CURLOPT_FOLLOWLOCATION => true,
+        CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+        CURLOPT_CUSTOMREQUEST => 'GET',
+        CURLOPT_HTTPHEADER => array(
+            'Accept: application/json',
+            'X-API-Key: ' . $apikey_tonpays
+        ),
+    ));
+    $response = curl_exec($curl);
+    curl_close($curl);
+    return json_decode($response, true);
+}
 function parseConfigs($input)
 {
     $lines = explode("\n", $input);

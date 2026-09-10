@@ -221,6 +221,15 @@ $aqayepardakht = json_encode([
     ],
     'resize_keyboard' => true
 ]);
+$tonpays = json_encode([
+    'keyboard' => [
+        [['text' => $textbotlang['keyboard']['setTonPaysApiKey']], ['text' => $textbotlang['keyboard']['cashbackTonPays']]],
+        [['text' => $textbotlang['keyboard']['minAmountTonPays']], ['text' => $textbotlang['keyboard']['maxAmountTonPays']]],
+        [['text' => $textbotlang['keyboard']['setEducationTonPays']]],
+        [['text' => $textbotlang['Admin']['backAdminBtn']], ['text' => $textbotlang['Admin']['backMenuBtn']]]
+    ],
+    'resize_keyboard' => true
+]);
 $NowPaymentsManage = json_encode([
     'keyboard' => [
         [['text' => $textbotlang['keyboard']['apiPlisio']], ['text' => $textbotlang['keyboard']['cashbackPlisio']]],
@@ -247,6 +256,7 @@ $setting_panel = json_encode([
 $PaySettingcard = getPaySettingValue("Cartstatus");
 $PaySettingnow = getPaySettingValue("nowpaymentstatus");
 $PaySettingaqayepardakht = getPaySettingValue("statusaqayepardakht");
+$PaySettingtonpays = getPaySettingValue("statustonpays");
 $PaySettingpv = getPaySettingValue("Cartstatuspv");
 $usernamecart = getPaySettingValue("CartDirect");
 $Swapino = getPaySettingValue("statusSwapWallet");
@@ -330,6 +340,11 @@ if ($PaySettingaqayepardakht == "onaqayepardakht") {
 if ($zarinpal == "onzarinpal") {
     $step_payment['inline_keyboard'][] = [
         ['text' => $textbotlang['textbot']['zarinPal'], 'callback_data' => "zarinpal"]
+    ];
+}
+if ($PaySettingtonpays == "ontonpays") {
+    $step_payment['inline_keyboard'][] = [
+        ['text' => $textbotlang['textbot']['tonPays'], 'callback_data' => "tonpays"]
     ];
 }
 if ($paymentstatussnotverify == "onverifypay") {

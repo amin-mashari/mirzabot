@@ -1815,8 +1815,11 @@ nowpayments.io
 📌 您当前的密钥：
 <code>%s</code>',
                         'askAqayePardakhtMerchant' => '💳 从 Aghaye Pardakht 获取您的商户代码并在此部分输入
-        
+
 您当前的商户代码：%s',
+                        'askTonPaysApiKey' => '💳 从 TonPays 机器人获取您的 API 密钥并在此部分输入
+
+您当前的 API 密钥：%s',
                         'askZarinpalMerchant' => '💳 从 ZarinPal 获取您的商户代码并在此部分输入
         
 您当前的商户代码：%s',
@@ -2667,7 +2670,12 @@ f,n.n2',
 用户用户名：‌ %s',
                         'errorAqayePardakhtLink' => '⭕️ 创建 Aghaye Pardakht 链接出错
 ✍️ 错误原因：%s
-            
+
+用户 ID：%s
+用户用户名：@%s',
+                        'errorTonPaysLink' => '⭕️ 创建 TonPays 链接出错
+✍️ 错误原因：%s
+
 用户 ID：%s
 用户用户名：@%s',
                         'errorBulkAccountCreate' => '
@@ -3570,6 +3578,7 @@ f,n.n2',
                 'agentPanel' => '👨‍💻 代理面板',
                 'agentRequestDesc' => '📌 请发送您的说明以提交代理申请。',
                 'aqayePardakht' => '🔵 Aghaye Pardakht 网关',
+                'tonPays' => '🔵 TonPays 网关',
                 'botOff' => '❌ 机器人已关闭，请几分钟后再试',
                 'cart' => '要增加余额，请将 <code>{price}</code>  托曼  存入下方账号 👇🏻
         
@@ -3743,6 +3752,7 @@ f,n.n2',
                 'appDownloadLink' => '🔗 应用下载链接',
                 'appDownloadLinkAlt' => '🔗应用下载链接',
                 'aqayePardakhtGateway' => '🔵 Aghaye Pardakht',
+                'tonPaysGateway' => '🔵 TonPays',
                 'authWithLink' => '🔑 通过链接进行身份认证',
                 'authenticate' => '🔒 身份认证',
                 'authenticateUser' => '用户身份认证',
@@ -3778,6 +3788,7 @@ f,n.n2',
                 'cancelPinnedMessages' => '取消置顶消息',
                 'cartToCartGateway' => '🔌 卡对卡',
                 'cashbackAqayePardakht' => '💰 Aghaye Pardakht 返现',
+                'cashbackTonPays' => '💰 TonPays 返现',
                 'cashbackCartToCart' => '💰 卡对卡返现',
                 'cashbackIranPay1' => '💰 里亚尔货币返现',
                 'cashbackIranPay2' => '💰 cubpay 返现',
@@ -3944,6 +3955,7 @@ f,n.n2',
                 'marzban' => 'Marzban',
                 'marzneshin' => 'Marzneshin',
                 'maxAmountAqayePardakht' => '⬆️ Aghaye Pardakht 最高金额',
+                'maxAmountTonPays' => '⬆️ TonPays 最高金额',
                 'maxAmountCartToCart' => '⬆️ 卡对卡最高金额',
                 'maxAmountCryptoOffline' => '⬆️ 离线加密货币最高金额',
                 'maxAmountIranPay1' => '⬆️ 里亚尔货币最高金额',
@@ -3959,6 +3971,7 @@ f,n.n2',
                 'messagingSection' => '📨 消息发送部分',
                 'mikrotik' => 'MikroTik',
                 'minAmountAqayePardakht' => '⬇️ Aghaye Pardakht 最低金额',
+                'minAmountTonPays' => '⬇️ TonPays 最低金额',
                 'minAmountCartToCart' => '⬇️ 卡对卡最低金额',
                 'minAmountCryptoOffline' => '⬇️ 离线加密货币最低金额',
                 'minAmountIranPay1' => '⬇️ 里亚尔货币最低金额',
@@ -4049,8 +4062,10 @@ f,n.n2',
                 'setAffiliatePercent' => '🧮 设置下线百分比',
                 'setApi' => '设置 api',
                 'setAqayePardakhtMerchant' => '设置 Aghaye Pardakht 商户',
+                'setTonPaysApiKey' => '设置 TonPays API 密钥',
                 'setCardNumber' => '💳 设置卡号',
                 'setEducationAqayePardakht' => '📚 设置 Aghaye Pardakht 网关教程',
+                'setEducationTonPays' => '📚 设置 TonPays 网关教程',
                 'setEducationCartToCart' => '📚 设置卡对卡教程',
                 'setEducationCryptoOffline' => '📚 设置离线货币教程 ',
                 'setEducationIranPay1' => '📚 设置第一里亚尔货币教程',
@@ -4322,6 +4337,7 @@ f,n.n2',
                 'paymentMethodAdminAdd' => '管理员增加',
                 'paymentMethodAdminDeduct' => '管理员扣除余额',
                 'paymentMethodAqayePardakht' => 'Aghaye Pardakht',
+                'paymentMethodTonPays' => 'TonPays',
                 'paymentMethodCardToCard' => '卡对卡',
                 'paymentMethodCryptoOffline' => '离线加密货币',
                 'paymentMethodRialGateway1' => '里亚尔网关 1',
@@ -4545,6 +4561,7 @@ f,n.n2',
                 'userMethodAdminAdd' => '管理员增加',
                 'userMethodAdminDeduct' => '管理员扣除',
                 'userMethodAqayePardakht' => 'Aghaye Pardakht',
+                'userMethodTonPays' => 'TonPays',
                 'userMethodCardToCard' => '卡→卡',
                 'userMethodCrypto' => '加密货币',
                 'userMethodRial1' => '里亚尔 1',
@@ -4689,11 +4706,17 @@ f,n.n2',
 用户卡号：%s
 支付方式：ZarinPal 网关',
                 'reportAqayepardakht' => '💵 新付款
-        
+
 用户数字 ID：%s
 用户用户名：%s
 交易金额 %s
 支付方式：Aghaye Pardakht 网关',
+                'reportTonpays' => '💵 新付款
+
+用户数字 ID：%s
+用户用户名：%s
+交易金额 %s
+支付方式：TonPays 网关',
                 'reportIranpay' => '💵 新付款
         
 用户数字 ID：%s

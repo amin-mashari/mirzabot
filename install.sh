@@ -284,6 +284,11 @@ self_update_script "$@"
 BOT_DIR_DEFAULT="/var/www/html/mirzaprobotconfig"
 CONFIG_FILE_DEFAULT="$BOT_DIR_DEFAULT/config.php"
 GIT_REPO="mahdiMGF2/mirzabot"
+# Private fork, fetched via SSH deploy key instead of the public zip/API paths
+# above (which 404 on a private repo with no credentials). Selected via the
+# "Private fork" menu entry in choose_source / fetch_source below.
+PRIVATE_GIT_REMOTE="git@github.com:amin-mashari/mirza.git"
+USE_GIT_CLONE=0
 LATEST_CACHE="/tmp/.mirza_latest_version"
 IP_CACHE="/tmp/.mirza_server_ip"
 
@@ -797,7 +802,7 @@ list_tags_desc() {
 # Honors flags ARG_CHANNEL (beta|release|auto) and ARG_VERSION (tag) for non-interactive use.
 # Returns: 0 = chosen, 1 = error, 2 = back to menu
 choose_source() {
-    SRC_ZIP_URL=""; SRC_LABEL=""
+    SRC_ZIP_URL=""; SRC_LABEL=""; USE_GIT_CLONE=0
     local beta="https://github.com/${GIT_REPO}/archive/refs/heads/main.zip"
     local tagbase="https://github.com/${GIT_REPO}/archive/refs/tags"
 
@@ -820,6 +825,8 @@ choose_source() {
                 if [ -n "$l" ]; then SRC_ZIP_URL="${tagbase}/${l}.zip"; SRC_LABEL="Release ${l}";
                 else SRC_ZIP_URL="$beta"; SRC_LABEL="Beta (main)"; fi
                 return 0 ;;
+            private)
+                USE_GIT_CLONE=1; SRC_ZIP_URL=""; SRC_LABEL="Private fork (main)"; return 0 ;;
             *) echo -e "    ${C_BAD}Unknown channel: ${ARG_CHANNEL}${CR}"; return 1 ;;
         esac
     fi
@@ -829,9 +836,10 @@ choose_source() {
     _mi "1" "Automatic  ${C_DIM}(latest stable release)${CR}"
     _mi "2" "Choose a specific release version"
     _mi "3" "Beta       ${C_DIM}(latest main branch - may be unstable)${CR}"
+    _mi "4" "Private fork ${C_DIM}(your own repo, via SSH deploy key)${CR}"
     _mi "0" "Back to menu"
     echo ""
-    printf "  ${C_PROMPT}❯${CR} Select ${C_DIM}[0-3]${CR}: "
+    printf "  ${C_PROMPT}❯${CR} Select ${C_DIM}[0-4]${CR}: "
     local S; read -r S
     case "$S" in
         0) return 2 ;;
@@ -869,8 +877,45 @@ choose_source() {
             SRC_ZIP_URL="${tagbase}/${c}.zip"; SRC_LABEL="Release ${c}"
             return 0 ;;
         3) SRC_ZIP_URL="$beta"; SRC_LABEL="Beta (main)"; return 0 ;;
+        4)
+            if ! command -v git >/dev/null 2>&1; then
+                echo -e "    ${C_BAD}●${CR} ${C_BAD}git is not installed. Install it first (apt-get install -y git).${CR}"
+                return 1
+            fi
+            echo ""
+            echo -e "  ${C_DIM}Testing SSH access to ${PRIVATE_GIT_REMOTE}...${CR}"
+            if ! GIT_SSH_COMMAND="ssh -o BatchMode=yes -o StrictHostKeyChecking=accept-new -o ConnectTimeout=8" \
+                git ls-remote "$PRIVATE_GIT_REMOTE" >/dev/null 2>&1; then
+                echo -e "    ${C_BAD}●${CR} ${C_BAD}Could not reach ${PRIVATE_GIT_REMOTE} over SSH.${CR}"
+                echo -e "    ${C_DIM}Make sure a read-only deploy key for this repo is loaded for root (ssh-agent, or ~/.ssh/id_* with a matching entry in ~/.ssh/config).${CR}"
+                return 1
+            fi
+            USE_GIT_CLONE=1; SRC_ZIP_URL=""; SRC_LABEL="Private fork (main)"
+            return 0 ;;
         *) echo -e "    ${C_BAD}Invalid selection.${CR}"; return 1 ;;
     esac
+}
+
+# Fetch bot source into "$1" (a fresh TEMP_DIR), leaving exactly one
+# top-level directory under it for the caller's existing
+# `find "$TEMP_DIR" -mindepth 1 -maxdepth 1 -type d` extraction-dir lookup.
+# Branches on USE_GIT_CLONE (set by choose_source) instead of always
+# downloading a zip, since GitHub serves neither zip archives nor the tags
+# API for a private repo without credentials — SSH + git is the only path in
+# that case.
+fetch_source() {
+    local temp_dir="$1" zip_url="$2" label="$3"
+    if [ "$USE_GIT_CLONE" = "1" ]; then
+        run_step "Cloning ${label}" \
+            "GIT_SSH_COMMAND='ssh -o BatchMode=yes -o StrictHostKeyChecking=accept-new' git clone --depth 1 '$PRIVATE_GIT_REMOTE' '$temp_dir/repo' && rm -rf '$temp_dir/repo/.git'" \
+            || return 1
+    else
+        run_step "Downloading ${label}" "wget -q -O '$temp_dir/bot.zip' '$zip_url'" \
+            || return 1
+        run_step "Extracting source files" "unzip -o -q '$temp_dir/bot.zip' -d '$temp_dir'" \
+            || return 1
+    fi
+    return 0
 }
 
 # Get public server IP, cached for 1 hour (falls back to local IP)
@@ -1693,6 +1738,7 @@ function install_bot() {
         if [ "$_rc" -ne 0 ]; then sleep 2; show_menu; return 1; fi
         state_set SRC_ZIP_URL "$SRC_ZIP_URL"
         state_set SRC_LABEL "$SRC_LABEL"
+        state_set USE_GIT_CLONE "$USE_GIT_CLONE"
         echo ""
         echo -e "  ${C_DIM}Install target:${CR} ${C_KEY}${SRC_LABEL}${CR}"
         sleep 1
@@ -1796,6 +1842,7 @@ function install_bot() {
         print_header "Downloading Bot Files"
         ZIP_URL="$(state_get SRC_ZIP_URL)"; [ -z "$ZIP_URL" ] && ZIP_URL="$SRC_ZIP_URL"
         SRC_LABEL_RESUME="$(state_get SRC_LABEL)"; [ -z "$SRC_LABEL_RESUME" ] && SRC_LABEL_RESUME="$SRC_LABEL"
+        USE_GIT_CLONE_RESUME="$(state_get USE_GIT_CLONE)"; [ -n "$USE_GIT_CLONE_RESUME" ] && USE_GIT_CLONE="$USE_GIT_CLONE_RESUME"
         if [ -d "$BOT_DIR" ]; then
             sudo rm -rf "$BOT_DIR" || {
                 echo -e "\e[91mError: Failed to remove existing directory $BOT_DIR.\033[0m"
@@ -1810,10 +1857,8 @@ function install_bot() {
 
         TEMP_DIR="/tmp/mirzaprobot"
         rm -rf "$TEMP_DIR"; mkdir -p "$TEMP_DIR"
-        run_step "Downloading Mirza (${SRC_LABEL_RESUME})" "wget -O '$TEMP_DIR/bot.zip' '$ZIP_URL'" \
+        fetch_source "$TEMP_DIR" "$ZIP_URL" "$SRC_LABEL_RESUME" \
             || { show_step_error; install_pause "Downloading bot files"; }
-        run_step "Extracting source files" "unzip -o '$TEMP_DIR/bot.zip' -d '$TEMP_DIR'" \
-            || { show_step_error; install_pause "Extracting bot files"; }
 
         EXTRACTED_DIR=$(find "$TEMP_DIR" -mindepth 1 -maxdepth 1 -type d | head -1)
         if [ -z "$EXTRACTED_DIR" ] || [ ! -d "$EXTRACTED_DIR" ]; then
@@ -2234,10 +2279,8 @@ function update_bot() {
     echo -e "\e[92mServer packages updated successfully...\033[0m\n"
     TEMP_DIR="/tmp/mirzaprobot_update"
     rm -rf "$TEMP_DIR"; mkdir -p "$TEMP_DIR"
-    run_step "Downloading ${TARGET_LABEL}" "wget -q -O '$TEMP_DIR/bot.zip' '$ZIP_URL'" \
+    fetch_source "$TEMP_DIR" "$ZIP_URL" "$TARGET_LABEL" \
         || { show_step_error; echo -e "\e[91mError: Failed to download update package.\033[0m"; exit 1; }
-    run_step "Extracting update package" "unzip -o -q '$TEMP_DIR/bot.zip' -d '$TEMP_DIR'" \
-        || { show_step_error; echo -e "\e[91mError: Failed to extract update package.\033[0m"; exit 1; }
     EXTRACTED_DIR=$(find "$TEMP_DIR" -mindepth 1 -maxdepth 1 -type d | head -1)
     if [ -z "$EXTRACTED_DIR" ] || [ ! -d "$EXTRACTED_DIR" ]; then
         echo -e "\e[91mError: Extracted update folder not found. Aborting before touching the current install.\033[0m"
