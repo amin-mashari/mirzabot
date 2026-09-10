@@ -1,0 +1,73 @@
+name: Sync upstream
+
+# Keeps this private fork current with the official upstream project
+# (mahdiMGF2/mirzabot) without losing the fork's own commits (TonPays
+# gateway, web-panel work, etc.). Runs on a daily schedule plus an
+# on-demand "Run workflow" button in the Actions tab.
+on:
+  schedule:
+    - cron: '0 6 * * *'
+  workflow_dispatch: {}
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          ref: main
+
+      - name: Configure git identity
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+      - name: Fetch upstream
+        run: |
+          git remote add upstream https://github.com/mahdiMGF2/mirzabot.git
+          git fetch upstream main
+
+      - name: Attempt merge on a side branch
+        id: merge
+        run: |
+          SYNC_BRANCH="sync/upstream-$(date +%Y-%m-%d)"
+          echo "SYNC_BRANCH=$SYNC_BRANCH" >> "$GITHUB_ENV"
+          git checkout -b "$SYNC_BRANCH"
+          if git merge upstream/main --no-edit -m "Merge upstream/main into main"; then
+            echo "conflict=false" >> "$GITHUB_OUTPUT"
+          else
+            # Commit as-is, conflict markers included, so a human can resolve
+            # them in a normal PR review instead of losing the merge attempt.
+            git add -A
+            git commit -m "Merge upstream/main into main (CONFLICTS — needs manual resolution)"
+            echo "conflict=true" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Fast-forward main (clean merge)
+        if: steps.merge.outputs.conflict == 'false'
+        run: |
+          # No-op if upstream had nothing new for us.
+          if ! git diff --quiet main "$SYNC_BRANCH"; then
+            git push origin "$SYNC_BRANCH":main
+          else
+            echo "Already up to date with upstream; nothing to push."
+          fi
+
+      - name: Push conflicted branch and open a PR
+        if: steps.merge.outputs.conflict == 'true'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          git push origin "$SYNC_BRANCH" --force
+          gh pr create \
+            --title "Upstream sync ($(date +%Y-%m-%d)): conflicts need manual resolution" \
+            --body "Automated daily sync from mahdiMGF2/mirzabot hit merge conflicts and could not be fast-forwarded into main automatically. Resolve the conflict markers on this branch (locally or in the GitHub UI), then merge this PR." \
+            --base main \
+            --head "$SYNC_BRANCH" \
+            || echo "A PR for this branch may already be open."
