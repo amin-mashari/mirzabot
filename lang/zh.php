@@ -216,6 +216,7 @@ return [
 🔄 请重新发送您的用户名',
                 'sectionDisabled' => '📛 此部分当前已停用',
                 'selectoption' => '请选择一个选项',
+                'invalidCommand' => '无效的命令',
                 'selectusername' => '请发送一个自定义用户名
 ⚠️ 用户名不得包含多余字符，如 @、空格或连字符。
 ⚠️ 用户名必须为英文。
@@ -253,7 +254,6 @@ return [
                         'waiting' => '等待支付确认',
                         'zarinpal' => '❌ 错误 
     通过此网关支付的最低金额为 5000 托曼。',
-                        'pendingPayment' => '❌ 您有一笔未确认的支付。请等待上一笔支付审核完毕，然后再发送新支付',
                         'cardEnabledNotice' => '💳 尊敬的用户，卡号已为您激活；现在您可以进行购买。',
                         'cardInstructionAlt' => '如需付款，请将金额存入下方卡号',
                         'giftDepositAlt' => '🎁 尊敬的用户，%s 托曼已作为礼物存入您的账户。',
@@ -1795,6 +1795,7 @@ trojan://xyz',
                         'cubepayFeeAsk' => "💵 请发送手续费数值：\n\n▫️ <b>0 到 100</b> → 按<b>百分比</b>收取（可含小数，如 <code>9.9</code>）\n▫️ <b>大于 100</b> → 按<b>固定土曼金额</b>收取（如 <code>5000</code>）\n\n当前数值：<b>%s</b>",
                         'cubepayFeeSavedPercent' => "✅ 已保存 — <b>%s%%</b> 百分比手续费\n\n示例：100,000 土曼的订单，客户需支付 <b>%s</b> 土曼。",
                         'cubepayFeeSavedFixed' => "✅ 已保存 — <b>%s 土曼</b> 固定手续费\n\n示例：100,000 土曼的订单，客户需支付 <b>%s</b> 土曼。",
+                        'askDailyLimit' => "⏳ 请发送 AbanGateway <b>成功</b>支付的每日上限。\n\n<b>0</b> 表示无上限。",
                         'off' => '已关闭',
                         'on' => '已开启',
                         'intro' => '📌 在下方列表中，您可以管理网关。
@@ -3938,6 +3939,7 @@ f,n.n2',
                 'endpointIranPay4Invalid' => '❌ 地址被拒绝。必须以 <code>https://</code> 开头且为有效域名。',
                 'minAmountIranPay4' => '⬇️ AbanGateway 最低金额',
                 'maxAmountIranPay4' => '⬆️ AbanGateway 最高金额',
+                'dailyLimitIranPay4' => '⏳ AbanGateway 每日上限',
                 'cashbackIranPay4' => '🎁 AbanGateway 返现',
                 'setEducationIranPay4' => '📚 AbanGateway 教程',
                 'lastHourStats' => '⏱️ 过去一小时',
@@ -4167,6 +4169,33 @@ f,n.n2',
                 'categorySaveBtn' => '保存分类',
                 'categoryCancelBtn' => '取消',
                 'categorySaveChangeBtn' => '保存更改',
+                'bottextPageTitle' => '机器人文本',
+                'bottextPageLede' => '编辑所有机器人文本；修改后的文本保存在 lang/override',
+                'bottextLangLabel' => '语言',
+                'bottextGroups' => [
+                        'bottext' => '机器人内文本编辑器',
+                        'language' => '语言',
+                        'common' => '通用',
+                        'users' => '用户',
+                        'Admin' => '管理',
+                        'textbot' => '主要文本和按钮',
+                        'keyboard' => '键盘',
+                        'panel' => '网页面板',
+                        'paymentGateway' => '支付网关',
+                        'db_defaults' => '默认值',
+                ],
+                'bottextAllGroups' => '全部分类',
+                'bottextSearchPlaceholder' => '搜索键或文本...',
+                'bottextOnlyChanged' => '仅显示已修改',
+                'bottextFilterBtn' => '应用筛选',
+                'bottextSaveBtn' => '保存更改',
+                'bottextDefaultLabel' => '默认：',
+                'bottextResetBtn' => '恢复默认',
+                'bottextSaved' => '文本已保存',
+                'bottextSaveError' => '机器人无权在 {path} 中保存文件。请在服务器终端运行此命令进行修复：{command}',
+                'bottextEmpty' => '未找到文本',
+                'bottextChangedLabel' => '已修改',
+                'bottextCountLabel' => '条文本',
                 'categoryNameRequired' => '分类名称为必填项。',
                 'categoryNameExists' => '该分类名称已存在。',
                 'categoryAdded' => '分类添加成功。',
@@ -4723,6 +4752,11 @@ f,n.n2',
 用户用户名：%s
 交易金额 %s
 支付方式：第一里亚尔货币',
+                'reportAbanGateway' => '💵 新付款
+- 👤 用户名 : @%s
+- 🆔 用户 ID : %s
+- 💸 金额 %s
+- 💳 支付方式 : AbanGateway',
                 'reportTronado' => '💵 新付款
 - 👤 用户用户名：@%s
 - 🆔用户数字 ID：%s

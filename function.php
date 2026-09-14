@@ -84,16 +84,6 @@ function getCrontabBinary()
         '/sbin',
     ];
 
-    $environmentPath = getenv('PATH');
-    if ($environmentPath !== false && $environmentPath !== '') {
-        foreach (explode(PATH_SEPARATOR, $environmentPath) as $pathDirectory) {
-            $pathDirectory = trim($pathDirectory);
-            if ($pathDirectory !== '' && !in_array($pathDirectory, $candidateDirectories, true)) {
-                $candidateDirectories[] = $pathDirectory;
-            }
-        }
-    }
-
     foreach ($candidateDirectories as $directory) {
         $executablePath = rtrim($directory, DIRECTORY_SEPARATOR) . DIRECTORY_SEPARATOR . 'crontab';
         if (@is_file($executablePath) && @is_executable($executablePath)) {
@@ -1644,6 +1634,65 @@ function isClientIpInRange($clientIp, $lowerBound, $upperBound)
 
     return strcmp($clientPacked, $lowerPacked) >= 0 && strcmp($clientPacked, $upperPacked) <= 0;
 }
+
+function webhookSecretMatches($secret)
+{
+    $received = $_GET['secret'] ?? '';
+
+    return is_string($received) && $received !== '' && hash_equals($secret, $received);
+}
+
+function ensureWebhookSecret()
+{
+    global $domainhosts;
+
+    $stored = (string) (select("setting", "*")['webhook_secret'] ?? '');
+    if ($stored !== '') {
+        return ['secret' => $stored, 'created' => false];
+    }
+
+    $secret = bin2hex(random_bytes(24));
+    update("setting", "webhook_secret", $secret, null, null);
+
+    $stored = (string) (select("setting", "*", null, null, "select", ['cache' => false])['webhook_secret'] ?? '');
+    if ($stored !== '') {
+        $secret = $stored;
+    }
+
+    telegram('setWebhook', [
+        'url' => "https://$domainhosts/index.php?secret=$secret",
+    ]);
+
+    return ['secret' => $secret, 'created' => true];
+}
+
+function setAgentWebhook($token, $id_user, $username, $secret)
+{
+    global $domainhosts;
+
+    return telegram('setWebhook', [
+        'url' => "https://$domainhosts/vpnbot/{$id_user}{$username}/index.php?secret=$secret",
+    ], $token);
+}
+
+function ensureAgentWebhookSecret($bot)
+{
+    $secret = (string) ($bot['webhook_secret'] ?? '');
+    if ($secret !== '') {
+        return ['secret' => $secret, 'created' => false];
+    }
+
+    if (empty($bot['bot_token'])) {
+        return ['secret' => '', 'created' => false];
+    }
+
+    $secret = bin2hex(random_bytes(24));
+    update("botsaz", "webhook_secret", $secret, "bot_token", $bot['bot_token']);
+    setAgentWebhook($bot['bot_token'], $bot['id_user'], $bot['username'], $secret);
+
+    return ['secret' => $secret, 'created' => true];
+}
+
 function addCronIfNotExists($cronCommand)
 {
     $commands = is_array($cronCommand) ? $cronCommand : [$cronCommand];
@@ -1721,28 +1770,51 @@ function addCronIfNotExists($cronCommand)
     return true;
 }
 
+function removeCron($pattern)
+{
+    $crontabBinary = getCrontabBinary();
+    if ($crontabBinary === null) {
+        return false;
+    }
+
+    $crontab = escapeshellarg($crontabBinary);
+    if (strpos((string) runShellCommand("$crontab -l 2>/dev/null"), $pattern) === false) {
+        return true;
+    }
+
+    runShellCommand("$crontab -l 2>/dev/null | grep -vF " . escapeshellarg($pattern) . " | $crontab -");
+    return true;
+}
+
 function activecron()
 {
     global $domainhosts;
 
+    removeCron("https://$domainhosts/cronbot/");
+
+    $phpPath = PHP_BINDIR . '/php';
+    $basePath = __DIR__ . '/cronbot';
     $cronCommands = [
-        "*/15 * * * * curl https://$domainhosts/cronbot/statusday.php",
-        "*/1 * * * * curl https://$domainhosts/cronbot/croncard.php",
-        "*/1 * * * * curl https://$domainhosts/cronbot/NoticationsService.php",
-        "*/5 * * * * curl https://$domainhosts/cronbot/payment_expire.php",
-        "*/1 * * * * curl https://$domainhosts/cronbot/sendmessage.php",
-        "*/3 * * * * curl https://$domainhosts/cronbot/plisio.php",
-        "*/1 * * * * curl https://$domainhosts/cronbot/activeconfig.php",
-        "*/1 * * * * curl https://$domainhosts/cronbot/disableconfig.php",
-        "*/1 * * * * curl https://$domainhosts/cronbot/iranpay1.php",
-        "0 */5 * * * curl https://$domainhosts/cronbot/backupbot.php",
-        "*/2 * * * * curl https://$domainhosts/cronbot/gift.php",
-        "*/30 * * * * curl https://$domainhosts/cronbot/expireagent.php",
-        "*/15 * * * * curl https://$domainhosts/cronbot/on_hold.php",
-        "*/2 * * * * curl https://$domainhosts/cronbot/configtest.php",
-        "*/15 * * * * curl https://$domainhosts/cronbot/uptime_node.php",
-        "*/15 * * * * curl https://$domainhosts/cronbot/uptime_panel.php",
+        "*/15 * * * * $phpPath $basePath/statusday.php",
+        "*/1 * * * * $phpPath $basePath/croncard.php",
+        "*/1 * * * * $phpPath $basePath/NoticationsService.php",
+        "*/5 * * * * $phpPath $basePath/payment_expire.php",
+        "*/1 * * * * $phpPath $basePath/sendmessage.php",
+        "*/3 * * * * $phpPath $basePath/plisio.php",
+        "*/1 * * * * $phpPath $basePath/activeconfig.php",
+        "*/1 * * * * $phpPath $basePath/disableconfig.php",
+        "*/1 * * * * $phpPath $basePath/iranpay1.php",
+        "0 */5 * * * $phpPath $basePath/backupbot.php",
+        "*/2 * * * * $phpPath $basePath/gift.php",
+        "*/30 * * * * $phpPath $basePath/expireagent.php",
+        "*/15 * * * * $phpPath $basePath/on_hold.php",
+        "*/2 * * * * $phpPath $basePath/configtest.php",
+        "*/15 * * * * $phpPath $basePath/uptime_node.php",
+        "*/15 * * * * $phpPath $basePath/uptime_panel.php",
     ];
+    if (intval(select("setting", "*")['scorestatus'] ?? 0) == 1) {
+        $cronCommands[] = "*/1 * * * * $phpPath $basePath/lottery.php";
+    }
 
     addCronIfNotExists($cronCommands);
 }
@@ -2042,6 +2114,9 @@ function languagechange($path_dir = null, string $lang = 'fa')
 }
 function bottext_apply_overrides(array &$base, $lang)
 {
+    $overrideFile = __DIR__ . '/lang/override/' . $lang . '.php';
+    if (is_file($overrideFile) && is_array($overrideTexts = include $overrideFile))
+        $base = array_replace_recursive($base, $overrideTexts);
     customEmojiLabels([]);
     $row = select("setting", "*", null, null, "select");
     $raw = is_array($row) ? ($row['text_edit'] ?? null) : null;

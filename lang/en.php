@@ -216,6 +216,7 @@ To enable it, the bot owner needs a Telegram Premium subscription, or the bot mu
 🔄 Please send your username again',
                 'sectionDisabled' => '📛 This section is currently disabled',
                 'selectoption' => 'Choose an option',
+                'invalidCommand' => 'Invalid command',
                 'selectusername' => 'Send a custom username
 ⚠️ The username must not contain extra characters such as @, space, or hyphen. 
 ⚠️ The username must be in English.
@@ -253,7 +254,6 @@ To enable it, the bot owner needs a Telegram Premium subscription, or the bot mu
                         'waiting' => 'Awaiting payment confirmation',
                         'zarinpal' => '❌ Error 
     The minimum amount for payment via this gateway is 5000 Toman.',
-                        'pendingPayment' => '❌ You have an unconfirmed payment. Please wait until the previous payment is reviewed, then send the new payment',
                         'cardEnabledNotice' => '💳 Dear user, the card number has been activated for you; you can now make your purchase.',
                         'cardInstructionAlt' => 'To pay, deposit the amount to the card number below',
                         'giftDepositAlt' => '🎁 Dear user, the amount of %s Toman has been deposited into your account as a gift.',
@@ -1795,6 +1795,7 @@ Current time: ',
                         'cubepayFeeAsk' => "💵 Send the fee value:\n\n▫️ <b>0 to 100</b> → a <b>percentage</b> fee (decimals allowed, e.g. <code>9.9</code>)\n▫️ <b>above 100</b> → a <b>fixed amount in toman</b> (e.g. <code>5000</code>)\n\nCurrent value: <b>%s</b>",
                         'cubepayFeeSavedPercent' => "✅ Saved — <b>%s%%</b> percentage fee\n\nExample: a 100,000 toman order becomes <b>%s</b> toman for the customer.",
                         'cubepayFeeSavedFixed' => "✅ Saved — <b>%s toman</b> fixed fee\n\nExample: a 100,000 toman order becomes <b>%s</b> toman for the customer.",
+                        'askDailyLimit' => "⏳ Send the daily cap for <b>successful</b> AbanGateway payments.\n\n<b>0</b> means no cap.",
                         'off' => 'Turned off',
                         'on' => 'Turned on',
                         'intro' => '📌 From the list below you can manage the gateways.
@@ -3938,6 +3939,7 @@ We hope you had a good experience with the ease and speed of your service. If yo
                 'endpointIranPay4Invalid' => '❌ Address rejected. It must start with <code>https://</code> and be a valid domain.',
                 'minAmountIranPay4' => '⬇️ AbanGateway minimum',
                 'maxAmountIranPay4' => '⬆️ AbanGateway maximum',
+                'dailyLimitIranPay4' => '⏳ AbanGateway daily cap',
                 'cashbackIranPay4' => '🎁 AbanGateway cashback',
                 'setEducationIranPay4' => '📚 AbanGateway guide',
                 'lastHourStats' => '⏱️ Last hour',
@@ -4167,6 +4169,33 @@ We hope you had a good experience with the ease and speed of your service. If yo
                 'categorySaveBtn' => 'Save Category',
                 'categoryCancelBtn' => 'Cancel',
                 'categorySaveChangeBtn' => 'Save Changes',
+                'bottextPageTitle' => 'Bot Texts',
+                'bottextPageLede' => 'Edit every bot text; changed texts are saved in lang/override',
+                'bottextLangLabel' => 'Language',
+                'bottextGroups' => [
+                        'bottext' => 'In-bot text editor',
+                        'language' => 'Language',
+                        'common' => 'Common',
+                        'users' => 'Users',
+                        'Admin' => 'Admin',
+                        'textbot' => 'Main texts & buttons',
+                        'keyboard' => 'Keyboards',
+                        'panel' => 'Web panel',
+                        'paymentGateway' => 'Payment gateways',
+                        'db_defaults' => 'Default values',
+                ],
+                'bottextAllGroups' => 'All sections',
+                'bottextSearchPlaceholder' => 'Search key or text...',
+                'bottextOnlyChanged' => 'Only changed',
+                'bottextFilterBtn' => 'Apply filter',
+                'bottextSaveBtn' => 'Save changes',
+                'bottextDefaultLabel' => 'Default:',
+                'bottextResetBtn' => 'Reset to default',
+                'bottextSaved' => 'Texts saved',
+                'bottextSaveError' => 'The bot is not allowed to save files in {path}. To fix it, run this command in the server terminal: {command}',
+                'bottextEmpty' => 'No texts found',
+                'bottextChangedLabel' => 'changed',
+                'bottextCountLabel' => 'texts',
                 'categoryNameRequired' => 'Category name is required.',
                 'categoryNameExists' => 'This category name already exists.',
                 'categoryAdded' => 'Category added successfully.',
@@ -4723,6 +4752,11 @@ User numeric ID : %s
 User username : %s
 Transaction amount %s
 Payment method : First Rial currency',
+                'reportAbanGateway' => '💵 New payment
+- 👤 Username : @%s
+- 🆔 User ID : %s
+- 💸 Amount %s
+- 💳 Method : AbanGateway',
                 'reportTronado' => '💵 New payment
 - 👤 User username : @%s
 - 🆔User numeric ID : %s

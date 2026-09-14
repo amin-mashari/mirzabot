@@ -18,6 +18,9 @@ $text = restoreCustomEmojiLabel($text);
 if (!checktelegramip())
     die("Unauthorized access");
 #-----------end telegram_ip_ranges------------#
+$webhookSecret = ensureWebhookSecret();
+if (!$webhookSecret['created'] && $webhookSecret['secret'] !== '' && !webhookSecretMatches($webhookSecret['secret']))
+    die("Unauthorized access");
 if ($is_bot)
     return;
 if (isset($update['chat_member'])) {
@@ -243,6 +246,7 @@ if (strpos($text, "/start ") !== false && $user['step'] != "gettextSystemMessage
             update("user", "Processing_value_four", "0", "id", $from_id);
             step('home', $from_id);
         }
+        return;
     } else {
         $text = $affiliatesid;
     }
@@ -264,6 +268,7 @@ if ($text == $textbotlang['keyboard']['acceptRules'] or $datain == "acceptrule")
     sendmessage($from_id, $textbotlang['users']['Rules'], $keyboard, 'html');
     $confrim = true;
     update("user", "roll_Status", $confrim, "id", $from_id);
+    return;
 }
 
 #-----------Bot_Status------------#
@@ -2906,31 +2911,7 @@ if ($text == "/start" || $datain == "start" || $text == "start") {
     $type = "transfertouser";
     $price = "0";
     $stmt->execute([$from_id, $nameloc['username'], $value, $type, $dateacc, $price]);
-} elseif ($text == $textbotlang['textbot']['userTest'] || $datain == "usertestbtn" || $text == "usertest") {
-    if (!check_active_btn($setting['keyboardmain'], "text_usertest")) {
-        sendmessage($from_id, $textbotlang['users']['usertest']['unavailable'], null, 'HTML');
-        return;
-    }
-    $locationproduct = select("marzban_panel", "*", "TestAccount", "ONTestAccount", "count");
-    if ($locationproduct == 0) {
-        sendmessage($from_id, $textbotlang['users']['sell']['nullPanel'], null, 'HTML');
-        return;
-    }
-    if ($locationproduct != 1) {
-        if ($setting['get_number'] == "onAuthenticationphone" && $user['step'] != "get_number" && $user['number'] == "none") {
-            sendmessage($from_id, $textbotlang['users']['number']['confirming'], $request_contact, 'HTML');
-            step('get_number', $from_id);
-        }
-        if ($user['number'] == "none" && $setting['get_number'] == "onAuthenticationphone")
-            return;
-        if ($user['limit_usertest'] <= 0 && !in_array($from_id, $admin_ids)) {
-            sendmessage($from_id, $textbotlang['users']['usertest']['limitwarning'], $keyboard_buy, 'html');
-            return;
-        }
-        sendmessage($from_id, $textbotlang['textbot']['selectLocation'], $list_marzban_usertest, 'html');
-    }
-}
-if ($user['step'] == "createusertest" || preg_match('/locationtest_(.*)/', $datain, $dataget) || ($text == $textbotlang['textbot']['userTest'] || $datain == "usertestbtn" || $text == "usertest")) {
+} elseif ($user['step'] == "createusertest" || preg_match('/locationtest_(.*)/', $datain, $dataget) || $text == $textbotlang['textbot']['userTest'] || $datain == "usertestbtn" || $text == "usertest") {
     if (!check_active_btn($setting['keyboardmain'], "text_usertest")) {
         sendmessage($from_id, $textbotlang['users']['usertest']['unavailable'], null, 'HTML');
         return;
@@ -2947,6 +2928,10 @@ if ($user['step'] == "createusertest" || preg_match('/locationtest_(.*)/', $data
     if ($user['number'] == "none" && $setting['get_number'] == "onAuthenticationphone")
         return;
     $locationproduct = select("marzban_panel", "*", "TestAccount", "ONTestAccount", "count");
+    if ($locationproduct == 0) {
+        sendmessage($from_id, $textbotlang['users']['sell']['nullPanel'], null, 'HTML');
+        return;
+    }
     if ($locationproduct == 1) {
         $panel = select("marzban_panel", "*", "TestAccount", "ONTestAccount", "select");
         if ($panel['hide_user'] != null) {
@@ -2960,12 +2945,11 @@ if ($user['step'] == "createusertest" || preg_match('/locationtest_(.*)/', $data
     } else {
         if (isset($dataget[1])) {
             $location = $dataget[1];
+        } elseif ($user['step'] == "createusertest") {
+            $location = $user['Processing_value_one'];
         } else {
-            if ($user['step'] != "createusertest") {
-                return;
-            } else {
-                $location = $user['Processing_value_one'];
-            }
+            sendmessage($from_id, $textbotlang['textbot']['selectLocation'], $list_marzban_usertest, 'html');
+            return;
         }
     }
     $marzban_list_get = select("marzban_panel", "*", "code_panel", $location, "select");
@@ -4679,15 +4663,8 @@ if ($user['step'] == "createusertest" || preg_match('/locationtest_(.*)/', $data
     update("user", "Processing_value", $balancelast, "id", $from_id);
     sendmessage($from_id, $textbotlang['users']['Balance']['selectPayment'], $step_payment, 'HTML');
     step('get_step_payment', $from_id);
-} elseif ($user['step'] == "get_step_payment") {
+} elseif ($user['step'] == "get_step_payment" && in_array($datain, ["cart_to_offline", "aqayepardakht", "zarinpal", "plisio", "nowpayment", "iranpay1", "iranpay2", "iranpay4", "iranpay3", "digitaltron", "startelegrams"])) {
     if ($datain == "cart_to_offline") {
-        $checkpay = $pdo->prepare("SELECT * FROM Payment_report WHERE id_user = :user_id AND payment_Status = 'waiting'");
-        $checkpay->bindValue(':user_id', $from_id, PDO::PARAM_STR);
-        $checkpay->execute();
-        if (($checkpay)->rowCount() != 0) {
-            sendmessage($from_id, $textbotlang['users']['Balance']['pendingPayment'], null, 'HTML');
-            return;
-        }
         $mainbalance = select("PaySetting", "ValuePay", "NamePay", "minbalancecart", "select")['ValuePay'];
         $maxbalance = select("PaySetting", "ValuePay", "NamePay", "maxbalancecart", "select")['ValuePay'];
         if ($user['Processing_value'] < $mainbalance || $user['Processing_value'] > $maxbalance) {
@@ -5223,16 +5200,16 @@ if ($user['step'] == "createusertest" || preg_match('/locationtest_(.*)/', $data
             return;
         }
 
-        // The daily spend throttle every other rial gateway has. Scoped to this
-        // gateway's own rows — the copy on `iranpay3` reads `Currency Rial 1`,
-        // which throttles the wrong gateway, so it is not copied verbatim.
-        $dateacc = date('Y/m/d');
-        $stmt = $pdo->prepare("SELECT SUM(price) as price FROM Payment_report WHERE Payment_Method = 'AbanGateway' AND time LIKE :today");
-        $stmt->execute([':today' => '%' . $dateacc . '%']);
-        $sumpayment = $stmt->fetch(PDO::FETCH_ASSOC);
-        if (intval($sumpayment['price']) > 1000000) {
-            sendmessage($from_id, $textbotlang['users']['Balance']['queueBusy'], null, 'HTML');
-            return;
+        $dailylimit = intval(getPaySettingValue('dailylimitiranpay4', '0'));
+        if ($dailylimit > 0) {
+            $dateacc = date('Y/m/d');
+            $stmt = $pdo->prepare("SELECT SUM(price) as price FROM Payment_report WHERE Payment_Method = 'AbanGateway' AND payment_Status = 'paid' AND time LIKE :today");
+            $stmt->execute([':today' => '%' . $dateacc . '%']);
+            $sumpayment = $stmt->fetch(PDO::FETCH_ASSOC);
+            if (intval($sumpayment['price']) >= $dailylimit) {
+                sendmessage($from_id, $textbotlang['users']['Balance']['queueBusy'], null, 'HTML');
+                return;
+            }
         }
 
         deletemessage($from_id, $message_id);
@@ -5489,8 +5466,7 @@ if ($user['step'] == "createusertest" || preg_match('/locationtest_(.*)/', $data
         $message_id = sendmessage($from_id, $textstar, $paymentkeyboard, 'HTML');
         updatePaymentMessageId($message_id, $randomString);
     }
-}
-if (preg_match('/^sendresidcart-(.*)/', $datain, $dataget)) {
+} elseif (preg_match('/^sendresidcart-(.*)/', $datain, $dataget)) {
     $timefivemin = time() - 120;
     $timefivemin = date('Y/m/d H:i:s', intval($timefivemin));
     $sql = "SELECT * FROM Payment_report WHERE id_user = :from_id AND Payment_Method = 'cart to cart' AND at_updated > :timefivemin";
@@ -6577,8 +6553,7 @@ if (preg_match('/^sendresidcart-(.*)/', $datain, $dataget)) {
             'parse_mode' => "HTML"
         ]);
     }
-}
-if (isset($update['pre_checkout_query'])) {
+} elseif (isset($update['pre_checkout_query'])) {
     $userid = $update['pre_checkout_query']['from']['id'];
     $id_order = $update['pre_checkout_query']['invoice_payload'];
     $Payment_report = select("Payment_report", "*", "id_order", $id_order, "select");
@@ -6594,8 +6569,7 @@ if (isset($update['pre_checkout_query'])) {
         return;
     }
     update("Payment_report", "dec_not_confirmed", json_encode($update['pre_checkout_query']), "id_order", $Payment_report['id_order']);
-}
-if (isset($update['message']['successful_payment'])) {
+} elseif (isset($update['message']['successful_payment'])) {
     $id_order = $update['message']['successful_payment']['invoice_payload'];
     $Payment_report = select("Payment_report", "*", "id_order", $id_order, "select");
     if ($Payment_report == false) {
@@ -6816,6 +6790,8 @@ if (isset($update['message']['successful_payment'])) {
         ]
     ]);
     Editmessagetext($from_id, $message_id, $textbotlang['language']['setSuccess'], $keyboard_back);
+} elseif ($text != "" && $Chat_type == "private" && !in_array($from_id, $admin_ids)) {
+    sendmessage($from_id, $textbotlang['users']['invalidCommand'], $keyboard, 'HTML');
 }
 if (in_array($from_id, $admin_ids))
     require_once 'admin.php';

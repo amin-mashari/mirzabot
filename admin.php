@@ -10,6 +10,77 @@ $domainhostsEscaped = htmlspecialchars($domainhosts, ENT_QUOTES | ENT_SUBSTITUTE
 
 $miniAppInstructionText = sprintf($textbotlang['Admin']['webpanel']['miniAppHelp'], $domainhostsEscaped);
 
+$backmenu_panel_steps = [
+    "GetNameNew", "GeturlNew", "GeturlNewx", "GetusernameNew", "GetpaawordNew", "getagentpanel",
+    "getuuidadmin", "getlimitnew", "updatetime", "val_usertest", "getinboundiid", "confirmremovepanel",
+    "updatemethodusername", "getnamecustom", "updateextendmethod", "setpricechangelocation",
+    "GetPriceExtra", "gettypeextra", "GetPricecustomvo", "gettypeextracustom",
+    "GetPricetimeextra", "gettypeextratime", "GetPriceExtratime", "gettypeextratimecustom",
+    "GetmaineExtra", "gettypeextramain", "GetmaxeExtra", "gettypeextramax",
+    "Getmaintime", "gettypeextramaintime", "Getmaxtime", "gettypeextramaxtime",
+    "getuserhide", "getuserhideforremove", "getprotocoldisable", "getInbounddisable",
+    "getservceid", "setinboundandprotocol"
+];
+$backmenu_panelfeature_steps = [
+    "getusernameconfigcr", "getcountcreate", "getvolumesconfig", "gettimeaccount",
+    "getusage_coefficient", "getnamenode", "getipnodeset"
+];
+$backmenu_menus = [];
+$backmenu_register = function (array $steps, $keyboard) use (&$backmenu_menus) {
+    foreach ($steps as $stepname) {
+        $backmenu_menus[$stepname] = $keyboard;
+    }
+};
+$backmenu_register(["addchannel", "getremark", "getlinkjoin", "removechannel"], $channelkeyboard);
+$backmenu_register(["add_name_help", "getcatgoryhelp", "add_dec", "remove_help", "getnameforedite"], $keyboardhelpadmin);
+$backmenu_register(["changenamehelp", "changecategoryhelp", "changedeshelp", "changemedia"], $helpedit);
+$backmenu_register([
+    "get_code", "get_price_code", "getlimitcodedis",
+    "get_codesell", "get_price_codesell", "getlimitcode", "gettypecodeagent", "gettimediscount",
+    "getfirstdiscount", "getuseuser", "getlocdiscount", "getproductdiscount",
+    "minbalancebulk", "getpricecashback", "getagent"
+], $shopkeyboard);
+$backmenu_register([
+    "get_limit", "get_agent", "get_location", "getcategory", "get_time", "get_price",
+    "gettimereset", "getnote", "endstep", "selectloc",
+    "getaddpricepeoduct", "getaddpricepeoductloc", "getagentaddpriceproduct",
+    "getkampricepeoduct", "getkampricepeoductloc", "getlowpricepeoductloc"
+], $keyboard_shop_manage);
+$backmenu_register(["get_name_new_category", "getremarkcategory", "removecategory", "editcategory_name"], $keyboard_Category_manage);
+$backmenu_register([
+    "change_price", "change_note", "change_categroy", "change_name", "change_type_agent",
+    "change_reset_data", "change_loc_data", "change_val", "change_time",
+    "getdatainboundproduct", "getlistpanel"
+], $change_product);
+$backmenu_register([
+    "CartDirect", "changecard", "getnamecard", "getcardremove", "showcardallusers",
+    "getcashcart", "gethelpcart", "getlistidcart", "getmaincart", "getmaxcart", "gettimeauto"
+], $CartManage);
+$backmenu_register(["getidExceptio", "getidExceptioremove"], $Exception_auto_cart_keyboard);
+$backmenu_register(["apiternado", "getcashiranpay2", "getfeeiranpay2", "getmaaxiranpay2", "getmainiranpay2", "helpiranpay2"], $trnado);
+$backmenu_register(["merchant_zarinpal", "getcashzarinpal", "getmaaxzarinpal", "getmainaqzarinpal", "helpzarinpal"], $keyboardzarinpal);
+$backmenu_register(["merchant_id_aqayepardakht", "getcashahaypar", "getmaaxaqayepardakht", "getmainaqayepardakht", "helpaqayepardakht"], $aqayepardakht);
+$backmenu_register(["apinowpayment", "getcashplisio", "gethelpplisio", "getmainplisio", "getmaxplisio"], $NowPaymentsManage);
+$backmenu_register(["marchent_tronseller", "getcashnowpayment", "gethelpnowpayment", "getmainaqnowpayment", "maxbalancenowpayment"], $nowpayment_setting_keyboard);
+$backmenu_register(["marchent_floypay", "getcashiranpay1", "gethelpiranpay1", "getmaaxiranpay1", "getmainiranpay1"], $Swapinokey);
+$backmenu_register(["apiiranpay", "helpiranpay3", "maxbalanceiranpay", "minbalanceiranpay"], $iranpaykeyboard);
+$backmenu_register(["apiiranpay4", "endpointiranpay4", "getcashiranpay4", "getdailyiranpay4", "getmaaxiranpay4", "getmainiranpay4", "helpiranpay4"], $abangatewaykeyboard);
+$backmenu_register(["getmaindigitaltron", "getmaxdigitaltron", "helpofflinearze"], $tronnowpayments);
+$backmenu_register(["chashbackstar", "gethelpstar", "getmainaqstar", "maxbalancestar"], $Startelegram);
+$backmenu_register([
+    "addchannelid", "limit_usertest_allusers", "getimagebackgroundqr", "getpricereqagent",
+    "getcronvolumere", "on_hold_day", "getdaycron", "getvolumewarn", "getdaywarn"
+], $setting_panel);
+$backmenu_register(["getdiscont", "setbanner", "setpercentage"], $affiliates);
+$backmenu_register(["idsupportset", "getidadmindep", "getdeparteman", "getremovedep"], $supportcenter);
+$backmenu_register(["getnameproduct", "getconfigtext", "getnameremove", "getnameedit"], $optionManualsale);
+$backmenu_register(["getcontentedit"], $configedit);
+$backmenu_register(["limitchangeall", "limitfreechangefree"], $keyboardchangelimit);
+$backmenu_register(["getnamebtnapp", "geturlbtnapp", "edit_app", "get_new_lin_app", "getnameappforremove"], $keyboardlinkapp);
+$backmenu_register(["getonelotary", "getonelotary2", "getonelotary3"], $lottery);
+$backmenu_register(["getpricewheel"], $wheelkeyboard);
+$backmenu_register(["add_name_panel", "add_link_panel", "add_username_panel", "add_password_panel", "getlimitedpanel"], $keyboardtypepanel);
+
 if (in_array($text, $textadmin) || $datain == "admin") {
     if ($datain == "admin")
         deletemessage($from_id, $message_id);
@@ -58,14 +129,22 @@ if (in_array($text, $textadmin) || $datain == "admin") {
         sendmessage($from_id, $textbotlang['Admin']['activeBotText'], $setting_panel, 'HTML');
         return;
     }
+    $backmenu_step = (string) $user['step'];
     step('home', $from_id);
-    if (in_array($user['step'], ["updatetime", "val_usertest", "getlimitnew", "GetusernameNew", "GeturlNew", "protocolset", "updatemethodusername", "GetNameNew", "getprotocol", "getprotocolremove", "GetpaawordNew", "updateextendmethod", "setpricechangelocation"])) {
-        $typepanel = select("marzban_panel", "*", "name_panel", $user['Processing_value'], "select");
-        outtypepanel($typepanel['type'], $textbotlang['Admin']['backMenu']);
-    } elseif (in_array($user['step'], ["selectloc", "get_limit", "selectlocedite", "GetPriceExtra", "GetPriceexstratime", "GetPricecustomtime", "GetPricecustomvolume", "get_code", "get_codesell", "minbalancebulk"])) {
-        sendmessage($from_id, $textbotlang['Admin']['backMenu'], $shopkeyboard, 'HTML');
-    } elseif (in_array($user['step'], ["addchannel", "removechannel"])) {
-        sendmessage($from_id, $textbotlang['Admin']['backMenu'], $channelkeyboard, 'HTML');
+    if (in_array($backmenu_step, $backmenu_panel_steps, true) || in_array($backmenu_step, $backmenu_panelfeature_steps, true)) {
+        $backmenu_panel = select("marzban_panel", "*", "name_panel", $user['Processing_value'], "select");
+        $backmenu_paneltype = is_array($backmenu_panel) ? (string) $backmenu_panel['type'] : '';
+        if ($backmenu_paneltype === '') {
+            sendmessage($from_id, $textbotlang['Admin']['backAdmin'], $keyboardadmin, 'HTML');
+        } elseif (in_array($backmenu_step, $backmenu_panelfeature_steps, true)) {
+            sendmessage($from_id, $textbotlang['Admin']['backMenu'], $backmenu_paneltype == "marzban" ? $optionathmarzban : $optionathx_ui, 'HTML');
+        } elseif ($backmenu_paneltype == "Manualsale") {
+            sendmessage($from_id, $textbotlang['Admin']['backMenu'], $optionManualsale, 'HTML');
+        } else {
+            outtypepanel($backmenu_paneltype, $textbotlang['Admin']['backMenu']);
+        }
+    } elseif (isset($backmenu_menus[$backmenu_step])) {
+        sendmessage($from_id, $textbotlang['Admin']['backMenu'], $backmenu_menus[$backmenu_step], 'HTML');
     } else {
         sendmessage($from_id, $textbotlang['Admin']['backAdmin'], $keyboardadmin, 'HTML');
     }
@@ -1887,27 +1966,12 @@ elseif ($datain == "systemsms") {
         update("setting", "statuscopycart", $valuenew);
     } elseif ($type == "score") {
         if ($value == "1") {
-                $crontabBinary = getCrontabBinary();
-                if ($crontabBinary === null) {
-                    error_log('Unable to locate crontab executable; cannot remove lottery cron job.');
-                } else {
-                    $currentCronJobs = runShellCommand(sprintf('%s -l 2>/dev/null', escapeshellarg($crontabBinary)));
-                    $jobToRemove = "*/1 * * * * curl https://$domainhosts/cronbot/lottery.php";
-                    $newCronJobs = preg_replace('/' . preg_quote($jobToRemove, '/') . '/', '', (string) $currentCronJobs);
-                    $tempCronFile = tempnam(sys_get_temp_dir(), 'cron');
-                    if ($tempCronFile === false) {
-                        error_log('Unable to create temporary file for lottery cron job removal.');
-                    } else {
-                        file_put_contents($tempCronFile, trim((string) $newCronJobs) . PHP_EOL);
-                        runShellCommand(sprintf('%s %s', escapeshellarg($crontabBinary), escapeshellarg($tempCronFile)));
-                        unlink($tempCronFile);
-                    }
-                }
+            removeCron(__DIR__ . '/cronbot/lottery.php');
             $valuenew = "0";
         } else {
-            $phpFilePath = "https://$domainhosts/cronbot/lottery.php";
-            $cronCommand = "*/1 * * * * curl $phpFilePath";
-            if (!addCronIfNotExists($cronCommand)) {
+            $phpPath = PHP_BINDIR . '/php';
+            $basePath = __DIR__ . '/cronbot';
+            if (!addCronIfNotExists("*/1 * * * * $phpPath $basePath/lottery.php")) {
                 error_log('Unable to register lottery cron job because shell_exec is unavailable.');
             }
             $valuenew = "1";
@@ -6280,6 +6344,17 @@ if ($datain == "settimecornremove" && $adminrulecheck['rule'] == "administrator"
     update("PaySetting", "ValuePay", intval($text), "NamePay", "maxbalanceiranpay4");
     sendmessage($from_id, $textbotlang['Admin']['SettingnowPayment']['saveApi'], $abangatewaykeyboard, 'HTML');
     step('home', $from_id);
+} elseif ($text == $textbotlang['keyboard']['dailyLimitIranPay4'] && $adminrulecheck['rule'] == "administrator") {
+    sendmessage($from_id, $textbotlang['Admin']['gateway']['askDailyLimit'] ?? $textbotlang['users']['selectoption'], $backadmin, 'HTML');
+    step("getdailyiranpay4", $from_id);
+} elseif ($user['step'] == "getdailyiranpay4") {
+    if (!ctype_digit($text)) {
+        sendmessage($from_id, $textbotlang['common']['invalidInput'], $backadmin, 'HTML');
+        return;
+    }
+    update("PaySetting", "ValuePay", intval($text), "NamePay", "dailylimitiranpay4");
+    sendmessage($from_id, $textbotlang['Admin']['SettingnowPayment']['saveApi'], $abangatewaykeyboard, 'HTML');
+    step('home', $from_id);
 } elseif ($text == $textbotlang['keyboard']['cashbackIranPay4'] && $adminrulecheck['rule'] == "administrator") {
     sendmessage($from_id, $textbotlang['Admin']['gateway']['askCashback'] ?? $textbotlang['users']['selectoption'], $backadmin, 'HTML');
     step("getcashiranpay4", $from_id);
@@ -9385,7 +9460,8 @@ if (isset($update["inline_query"])) {
     $contentconfig = file_get_contents($dirsource . "/config.php");
     $new_code = str_replace('BotTokenNew', $userdate['token'], $contentconfig);
     file_put_contents($dirsource . "/config.php", $new_code);
-    file_get_contents("https://api.telegram.org/bot{$userdate['token']}/setwebhook?url=https://$domainhosts/vpnbot/{$userdate['id_user']}{$userdate['username']}/index.php");
+    $agent_secret = bin2hex(random_bytes(24));
+    setAgentWebhook($userdate['token'], $userdate['id_user'], $userdate['username'], $agent_secret);
     file_get_contents(sprintf($textbotlang['Admin']['agentbot']['activatedUrlAlt'], $userdate['token'], $userdate['id_user']));
     $datasetting = json_encode(array(
         "minpricetime" => 4000,
@@ -9398,7 +9474,7 @@ if (isset($update["inline_query"])) {
         'show_product' => true,
     ));
     $value = "{}";
-    $stmt = $pdo->prepare("INSERT INTO botsaz (id_user,bot_token,admin_ids,username,time,setting,hide_panel) VALUES (:id_user,:bot_token,:admin_ids,:username,:time,:setting,:hide_panel)");
+    $stmt = $pdo->prepare("INSERT INTO botsaz (id_user,bot_token,admin_ids,username,time,setting,hide_panel,webhook_secret) VALUES (:id_user,:bot_token,:admin_ids,:username,:time,:setting,:hide_panel,:webhook_secret)");
     $stmt->bindParam(':id_user', $userdate['id_user'], PDO::PARAM_STR);
     $stmt->bindParam(':bot_token', $userdate['token'], PDO::PARAM_STR);
     $stmt->bindParam(':admin_ids', $admin_ids);
@@ -9407,6 +9483,7 @@ if (isset($update["inline_query"])) {
     $stmt->bindParam(':time', $time, PDO::PARAM_STR);
     $stmt->bindParam(':setting', $datasetting, PDO::PARAM_STR);
     $stmt->bindParam(':hide_panel', $value, PDO::PARAM_STR);
+    $stmt->bindParam(':webhook_secret', $agent_secret, PDO::PARAM_STR);
     $stmt->execute();
     $texbot = sprintf($textbotlang['Admin']['agentbot']['created'], $userdate['username'], $userdate['token']);
     sendmessage($from_id, $texbot, $keyboardadmin, 'HTML');
@@ -10448,7 +10525,12 @@ if ($datain == "settimecornday" && $adminrulecheck['rule'] == "administrator") {
     }
     sendmessage($from_id, $textbotlang['Admin']['agentbot']['webhookRunning'], null, 'HTML');
     foreach ($bots_agent as $bot) {
-        file_get_contents("https://api.telegram.org/bot{$bot['bot_token']}/setwebhook?url=https://$domainhosts/vpnbot/{$bot['id_user']}{$bot['username']}/index.php");
+        $agent_secret = (string) ($bot['webhook_secret'] ?? '');
+        if ($agent_secret === '') {
+            $agent_secret = bin2hex(random_bytes(24));
+            update("botsaz", "webhook_secret", $agent_secret, "bot_token", $bot['bot_token']);
+        }
+        setAgentWebhook($bot['bot_token'], $bot['id_user'], $bot['username'], $agent_secret);
     }
     sendmessage($from_id, $textbotlang['Admin']['agentbot']['webhookDone'], null, 'HTML');
 } elseif (preg_match('/statuscronuser-(.*)/', $datain, $dataget)) {
