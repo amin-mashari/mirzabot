@@ -2,11 +2,15 @@ name: Sync upstream
 
 # Keeps this private fork current with the official upstream project
 # (mahdiMGF2/mirzabot) without losing the fork's own commits (TonPays
-# gateway, web-panel work, etc.). Runs on a daily schedule plus an
-# on-demand "Run workflow" button in the Actions tab.
+# gateway, web-panel work, etc.).
+#
+# DISABLED: the scheduled run of this workflow overwrote origin/main with
+# plain upstream (losing the fork's commits) once already. Use ./fetch.sh
+# locally instead, which refuses to push on any non-fast-forward/conflict
+# case. Re-enable the schedule only after the push step below is fixed to
+# never fast-forward main to something that isn't a strict descendant of
+# origin/main's current tip.
 on:
-  schedule:
-    - cron: '0 6 * * *'
   workflow_dispatch: {}
 
 permissions:
